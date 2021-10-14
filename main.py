@@ -46,7 +46,7 @@ prevBtn = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located(
 try:
     testxpath = driver.find_elements_by_xpath("//div[contains(@class, 'CalendarToDoNotEnoughEntriesRegistered')]")
     
-    print(f"XpathLen: {len(testxpath)}")
+    print(f"XpathLen: {len(testxpath)}\n\nItems:")
 
     for item in testxpath:
         print(item.get_attribute('class'))
@@ -58,6 +58,9 @@ alldays = driver.find_elements_by_xpath("//div[contains(@class, 'CalendarToDoNot
 time.sleep(2)
 
 for day in alldays:
+    print("Press enter to continue...")
+    input()
+    print(f"Class:\n{day.get_attribute('class')}")
     item.click()
     hour0 = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.ID, "Stunde0")))[0]
     setSubject(hour0)
