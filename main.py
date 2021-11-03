@@ -13,7 +13,13 @@ def setSubject(hour):
     selectVal = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.XPATH, "//option[contains(text(), 'L12')]")))[0]
     
     teacherbox = Select(WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.ID, "Lehrerbox")))[0])
-    teacherbox.select_by_visible_text(selectVal.text)
+    try:
+        teacherbox.select_by_visible_text(selectVal.text)
+    except:
+        print("Couldn't select teacher")
+        WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.ID, "wrapper")))[0]
+        return
+    
 
     activitybox = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.ID, "Activity")))[0]
     activitybox.clear()
@@ -44,7 +50,7 @@ nextBtn = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located(
 prevBtn = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "pull-right")))[0]
 
 try:
-    testxpath = driver.find_elements_by_xpath("//div[contains(@class, 'CalendarToDoNotEnoughEntriesRegistered')]")
+    testxpath = driver.find_elements_by_xpath("//div[contains(@class, 'future active CalendarToDoNotEnoughEntriesRegistered')]")
     
     print(f"XpathLen: {len(testxpath)}\n\nItems:")
 
@@ -53,21 +59,21 @@ try:
 except:
     print("Something went wrong with xpath")
 
-alldays = driver.find_elements_by_xpath("//div[contains(@class, 'CalendarToDoNotEnoughEntriesRegistered')]")
+alldays = driver.find_elements_by_xpath("//div[contains(@class, 'future active CalendarToDoNotEnoughEntriesRegistered')]")
 
 time.sleep(2)
 
 for day in alldays:
-    print("Press enter to continue...")
-    input()
     print(f"Class:\n{day.get_attribute('class')}")
-    item.click()
+    day.click()
+    time.sleep(0.1)
     hour0 = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.ID, "Stunde0")))[0]
     setSubject(hour0)
     
     time.sleep(1)
 
-    item.click()
+    day.click()
+    time.sleep(0.1)
     hour1 = WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.ID, "Stunde1")))[0]
     setSubject(hour1)
 
